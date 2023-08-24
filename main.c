@@ -1,26 +1,29 @@
 #include <stdint.h>
 
+typedef uint8_t*const register_t;
+typedef uint8_t volatile* iregister_t;
+
 void delay(void);
 void configure_pins(void);
-void set_one(uint8_t *, uint8_t);
-void set_zero(uint8_t *, uint8_t);
+void set_one(register_t, uint8_t);
+void set_zero(register_t, uint8_t);
 
-uint8_t *odr(uint8_t *);
-uint8_t volatile *idr(uint8_t *);
-uint8_t *ddr(uint8_t *);
-uint8_t *cr1(uint8_t *);
-uint8_t *cr2(uint8_t *);
+register_t odr(register_t);
+iregister_t idr(register_t);
+register_t ddr(register_t);
+register_t cr1(register_t);
+register_t cr2(register_t);
 uint8_t is_pressed(uint8_t);
 uint8_t prev_state(uint8_t);
 
 uint8_t prev_states = 0x00;
-uint8_t * const portA = (uint8_t *) 0x5000;
-uint8_t * const portC = (uint8_t *) 0x500A;
-uint8_t * const portD = (uint8_t *) 0x500F;
-uint8_t * const EXTI_CR1 = (uint8_t *)0x50A0;
-uint8_t * const EXTI_CR2 = (uint8_t *)0x50A1;
-uint8_t * const EXTI_SR1 = (uint8_t *)0x50A3;
-uint8_t * const CPU_CCR = (uint8_t *)0x7F0A;
+register_t portA = (register_t) 0x5000;
+register_t portC = (register_t) 0x500A;
+register_t portD = (register_t) 0x500F;
+register_t EXTI_CR1 = (register_t)0x50A0;
+register_t EXTI_CR2 = (register_t)0x50A1;
+register_t EXTI_SR1 = (register_t)0x50A3;
+register_t CPU_CCR = (register_t)0x7F0A;
 
 int main(void) {
   configure_pins();
@@ -37,31 +40,31 @@ uint8_t is_pressed(uint8_t button) {
   return !(*idr(portA) & (1 << button));
 }
 
-void set_one(uint8_t * reg, uint8_t pin) {
+void set_one(register_t reg, uint8_t pin) {
   *reg |= (1 << pin);
 }
 
-void set_zero(uint8_t * reg, uint8_t pin) {
+void set_zero(register_t reg, uint8_t pin) {
   *reg &= ~(1 << pin);
 }
 
-uint8_t *odr(uint8_t * reg) {
+register_t odr(register_t reg) {
   return reg;
 }
 
-uint8_t volatile *idr(uint8_t * reg) {
+iregister_t idr(register_t reg) {
   return reg + 0x01;
 }
 
-uint8_t *ddr(uint8_t * reg) {
+register_t ddr(register_t reg) {
   return reg + 0x02;
 }
 
-uint8_t *cr1(uint8_t * reg) {
+register_t cr1(register_t reg) {
   return reg + 0x03;
 }
 
-uint8_t *cr2(uint8_t * reg) {
+register_t cr2(register_t reg) {
   return reg + 0x04;
 }
 
