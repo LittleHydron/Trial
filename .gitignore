@@ -2,3 +2,7 @@ Debug/*
 settings/*
 *.ewp
 *.dep
+*.ewd
+*.ewt
+*.eww
+.vscode/
