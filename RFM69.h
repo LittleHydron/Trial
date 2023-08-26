@@ -35,7 +35,6 @@ void unselect(void) {
 }
 
 void RFM_configure(uint8_t is_Rx) {
-  select();
   uint8_t cur_mode = RFM_read_register(RFM_MODE);
   if (is_Rx) {
     cur_mode |= 0x04 << 2;
@@ -55,7 +54,6 @@ void RFM_configure(uint8_t is_Rx) {
   cur_mode = RFM_read_register(PCT_CFG);
   cur_mode |= (1 << 7); // Variable packet size
   RFM_write_register(PCT_CFG, cur_mode);
-  unselect();
 }
 
 uint8_t RFM_read_register(uint8_t addr) {

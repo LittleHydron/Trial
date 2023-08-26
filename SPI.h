@@ -22,7 +22,13 @@ void SPI_configure(void) {
 }
 
 void SPI_send(uint8_t data) {
+  // set_one(odr((register_t) 0x500A), 3);
+  // for (uint32_t volatile i=0; i<10000; ++ i);
+  // set_zero(odr((register_t) 0x500A), 3);
   while(!(*SPI_SR & (1 << 1)));
+  // set_one(odr((register_t) 0x500A), 4);
+  // for (uint32_t volatile i=0; i<10000; ++ i);
+  // set_zero(odr((register_t) 0x500A), 4);
   *SPI_DR = (data);
 }
 
