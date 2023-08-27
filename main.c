@@ -1,6 +1,5 @@
 #include "RFM69.h"
 
-void delay(void);
 void configure_pins(void);
 
 uint8_t is_pressed(uint8_t);
@@ -12,7 +11,8 @@ register_t portD = (register_t) 0x500F;
 
 int main(void) {
   configure_pins();
-  RFM_configure();
+  SPI_configure();
+  RFM_configure(1);
   while (1) {
     uint8_t command = RFM_read_register(RFM_FIFO);
     invert_pin(&cur_states, command);
@@ -86,12 +86,7 @@ int main(void) {
       }
       break;
     }
-    delay();
   }
-}
-
-void delay(void) {
-  for (volatile uint32_t i=0; i<100000; ++ i);
 }
 
 uint8_t is_pressed(uint8_t button) {
@@ -109,10 +104,19 @@ void configure_pins(void) {
   }
   
   // PB3 is used as NSS
-  set_one(ddr(portB), 3);
-  set_one(cr1(portB), 3);
-  set_one(cr2(portB), 3);
+  for (uint8_t i=3; i<7; ++ i) {
+    if (i == 4) {
+      continue;
+    }
+    set_one(ddr(portB), i);
+    set_one(cr1(portB), i);
+    set_one(cr2(portB), i);
+  }
   set_one(odr(portB), 3);
+  // PB7 as MISO
+  set_zero(ddr(portB), 7);
+  set_one(cr1(portB), 7);
+  set_zero(cr2(portB), 7);
 
   RFM_set_NSS(portB, 3);
 }
