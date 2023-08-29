@@ -15,6 +15,11 @@ int main(void) {
   RFM_configure(1);
   while (1) {
     uint8_t command = RFM_read_register(RFM_FIFO);
+    *odr(portC) = (command << 2);
+    if (command == 0) {
+      invert_pin(odr(portD), 1);
+      for (int volatile j=0; j<10000; ++ j);
+    }
     invert_pin(&cur_states, command);
     switch(command) {
     case 2:
