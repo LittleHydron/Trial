@@ -43,14 +43,6 @@ void RFM_configure(uint8_t is_Rx) {
   }
   RFM_write_register(RFM_MODE, cur_mode);
   
-  // uint32_t frf = (217UL << 16); // 868 MHz
-  // uint8_t frfMsb = (uint8_t)((frf >> 16) & 0xFF);
-  // uint8_t frfMid = (uint8_t)((frf >> 8) & 0xFF);
-  // uint8_t frfLsb = (uint8_t)(frf & 0xFF);
-  // SPI_send_byte(FRF_MSB, frfMsb);
-  // SPI_send_byte(FRF_MID, frfMid);
-  // SPI_send_byte(FRF_LSB, frfLsb);
-  
   cur_mode = RFM_read_register(PCT_CFG);
   cur_mode |= (1 << 7); // Variable packet size
   RFM_write_register(PCT_CFG, cur_mode);
