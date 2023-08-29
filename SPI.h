@@ -22,7 +22,7 @@ void SPI_configure(void) {
 }
 
 void SPI_send(uint8_t data) {
-  // while(!(*SPI_SR & (1 << 1)));
+  while(!(*SPI_SR & (1 << 1))); 
   *SPI_DR = (data);
 }
 
