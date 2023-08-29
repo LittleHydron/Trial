@@ -17,12 +17,12 @@ void SPI_configure(void) {
   *SPI_CR1 &= ~3;           // CPOL and CPHA conf
   set_zero(SPI_CR1, 7);     // MSB First (RFM requires that)
   *SPI_CR1 |= 3;            // software slave select & master mode
-  set_one(SPI_CR1, 6);      // SPI enable
   set_one(SPI_CR1, 2);      // Master mode
+  set_one(SPI_CR1, 6);      // SPI enable
 }
 
 void SPI_send(uint8_t data) {
-  while(!(*SPI_SR & (1 << 1)));
+  // while(!(*SPI_SR & (1 << 1)));
   *SPI_DR = (data);
 }
 
